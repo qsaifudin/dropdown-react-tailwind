@@ -1,75 +1,151 @@
-# React + TypeScript + Vite
+# SearchDropdown
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A flexible React dropdown component with:
 
-Currently, two official plugins are available:
+- single & multiple selection
+- search filtering
+- portal support
+- custom option rendering
+- floating UI positioning
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Built with React + Floating UI + Tailwind.
 
-## React Compiler
+---
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+## Installation
 
-Note: This will impact Vite dev & build performances.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Basic Usage
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```tsx
+const options = [
+  { value: "1", label: "Option 1" },
+  { value: "2", label: "Option 2" },
+];
+
+export default function App() {
+  const [value, setValue] = useState();
+
+  return (
+    <SearchDropdown
+      label="Select option"
+      options={options}
+      value={value}
+      onChange={setValue}
+    />
+  );
+}
 ```
+
+---
+
+## Multiple Selection
+
+```tsx
+const [value, setValue] = useState([]);
+
+<SearchDropdown
+  options={options}
+  value={value}
+  onChange={setValue}
+  multiple
+/>;
+```
+
+---
+
+## Searchable Dropdown
+
+```tsx
+<SearchDropdown
+  options={options}
+  value={value}
+  onChange={setValue}
+  searchable
+/>
+```
+
+---
+
+## Portal Mode
+
+Use portal if your dropdown is inside a container with `overflow: hidden`.
+
+```tsx
+<SearchDropdown
+  options={options}
+  value={value}
+  onChange={setValue}
+  usePortal
+/>
+```
+
+---
+
+## Custom Option Rendering
+
+```tsx
+<SearchDropdown
+  options={options}
+  value={value}
+  onChange={setValue}
+  renderOption={(opt, selected) => (
+    <div className="flex justify-between w-full">
+      <span>{opt.label}</span>
+      {selected && "✓"}
+    </div>
+  )}
+/>
+```
+
+---
+
+## Props
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `options` | `Option[]` | Dropdown options |
+| `value` | `Option \| Option[]` | Selected value(s) |
+| `onChange` | `(value) => void` | Change handler |
+| `multiple` | `boolean` | Enable multi-select |
+| `searchable` | `boolean` | Enable search input |
+| `usePortal` | `boolean` | Render menu in portal |
+| `label` | `string` | Input label |
+| `renderOption` | `(opt, selected) => ReactNode` | Custom option UI |
+
+---
+
+## Option Type
+
+```ts
+type Option = {
+  value: string;
+  label: string;
+};
+```
+
+---
+
+## Styling
+
+This component uses Tailwind CSS utility classes.
+
+Make sure Tailwind is installed in your project:
+
+👉 https://tailwindcss.com/docs/installation
+
+---
+
+## Dependencies
+
+- React
+- @floating-ui/react
+- feather-icons-react
+- clsx
+
+---
