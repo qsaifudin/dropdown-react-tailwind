@@ -148,4 +148,4 @@ Make sure Tailwind is installed in your project:
 - feather-icons-react
 - clsx
 
----
+--- 
